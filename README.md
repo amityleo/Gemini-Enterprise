@@ -1,6 +1,6 @@
 ## What is Google Connector?
 
-A connector is a set of Google-managed infrastructure, applications, and processes that can be thought of as an "ETL in a box." Its primary role is to integrate with source systems. Connectors authenticate themselves and fetch documents and identities (for Access Control Lists - ACLs) from source systems. There are two types of connector in Google Gemini Enterprise:
+A connector is a set of Google-managed infrastructure, applications, and processes that can be thought of as an "ETL in a box." Its primary role is to integrate with source systems. Connectors authenticate themselves and fetch documents and identities (for Access Control Lists - ACLs) from source systems. There are two types of connectors in Google Gemini Enterprise:
 
 1. Native Conenctor - These connectors fetch documents and index them internally, consuming storage space
 2. Federated Connector - Unlike Native connectors, these do not fetch documents. Instead, they perform remote searches at the time of data blending (at request time)
@@ -16,12 +16,6 @@ There are a few concepts that are important to understand:
 - **Data Syncs (Entity & Identity):** The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
 
 
-
-
-
-
-
->> connector create vertex AI search index so that Gemini can use it
 
 ==============
 
