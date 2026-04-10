@@ -1,11 +1,11 @@
 ## What is Google Connector?
 
-A connector is a set of Google-managed infrastructure, applications, and processes that can be thought of as an "ETL in a box." Its primary role is to integrate with source systems. Connectors authenticate themselves and fetch documents and identities (for Access Control Lists - ACLs) from source systems. There are two types of connectors in Google Gemini Enterprise:
+A connector is a set of Google-managed infrastructure, applications, and processes that can be thought of as an "ETL in a box." Its primary role is to integrate with source systems. Connectors authenticate themselves and fetch documents and identities (for Access Control Lists - ACLs) from source systems. Generally, there are two types of connectors:
 
 1. Native Conenctor - These connectors fetch documents and index them internally, consuming storage space
 2. Federated Connector - Unlike Native connectors, these do not fetch documents. Instead, they perform remote searches at the time of data blending (at request time)
 
-There are a few concepts that are important to understand: 
+## Important Concepts for Gemini Connector: 
 
 - **Retrieval-Augmented Generation (RAG):** is an AI framework that improves Large Language Model (LLM) accuracy by fetching relevant, up-to-date data from external, trusted knowledge bases before generating a response. Give more context to the LLM to generate more accurate and avoid hallucinations. 
 
@@ -19,41 +19,31 @@ Below is the sample infographic to illustrate the workflow of the Gemini Connect
 
 ![Screenshot of the project](images/workflow.png)
 
-==============
 
-Enterprise Data Sources: This top panel showcases a mix of native Google services (like Drive, Gmail, and BigQuery) and widely used third-party enterprise platforms (such as Jira, Salesforce, ServiceNow, and HubSpot). This wide selection emphasizes Gemini Enterprise's ability to act as a central hub for diverse internal knowledge.
+## Explanation from the infographic
 
-Connectors Hub: This section details the critical configuration steps for your connectors. It highlights authentication methods (like OAuth, service accounts, and Customer-Managed Encryption Keys or CMEK) and critical concepts for scheduling data syncs, ensuring your data stores remain up-to-date while managing API load and costs.
+- **Enterprise Data Sources:** This top panel showcases a mix of native Google services (like Drive, Gmail, and BigQuery) and widely used third-party enterprise platforms (such as Jira, Salesforce, ServiceNow, and HubSpot). This wide selection emphasizes Gemini Enterprise's ability to act as a central hub for diverse internal knowledge.
 
-Data Sync Types: Understanding the difference between these synchronization methods is crucial for efficient data pipeline design:
+- **Connectors Hub:** This section details the critical configuration steps for your connectors. It highlights authentication methods (like OAuth, service accounts, and Customer-Managed Encryption Keys or CMEK) and critical concepts for scheduling data syncs, ensuring your data stores remain up-to-date while managing API load and costs.
 
-Identity Sync: Synchronizes roles, permissions, and user groups to create Access Control Lists (ACLs). This is a foundational step for secure enterprise AI.
+- **Data Sync Types:** Understanding the difference between these synchronization methods is crucial for efficient data pipeline design:
 
-Entity Sync: Pulls the actual content, such as Jira issues, documents, or spreadsheet data.
+  - **Identity Sync:** Synchronizes roles, permissions, and user groups to create Access Control Lists (ACLs). This is a foundational step for secure enterprise AI.
 
-Full Sync: A complete refresh of the data store, which can be computationally and storage-intensive.
+  - **Entity Sync:** Pulls the actual content, such as Jira issues, documents, or spreadsheet data.
 
-Incremental Sync: A delta-based sync that only pulls data added or modified since the last sync.
+  - **Full Sync:** A complete refresh of the data store, which can be computationally and storage-intensive.
 
-Processing & Indexing: Ingestion vs. Federation: This panel illustrates the core choice a data engineer must make for each data source, explaining the performance and cost trade-offs of Ingestion (creating and storing rich search indexes within Google Cloud) versus Federation (querying the source in real-time without duplicating data).
+  - **Incremental Sync:** A delta-based sync that only pulls data added or modified since the last sync.
 
-Dedicated Data Stores: Here, the infographic explains how ingested data is stored, distinguishing between Structured Data Stores (which require or auto-detect a specific schema for relational data) and Unstructured Data Stores (optimized for parsing and chunking documents like PDFs, DOCX, or HTML). It also prominently notes considerations for data residency, region selection, and encryption.
+- **Processing & Indexing:** Ingestion vs. Federation: This panel illustrates the core choice a data engineer must make for each data source, explaining the performance and cost trade-offs of Ingestion (creating and storing rich search indexes within Google Cloud) versus Federation (querying the source in real-time without duplicating data).
 
-AI Application & Enablement: The final panel shows the business value: the data is ready to be linked to a generative AI or search application, enabling powerful, secure, and permission-aware use cases like semantic search, answer generation, and data insights.
+- **Dedicated Data Stores:** Here, the infographic explains how ingested data is stored, distinguishing between *Structured Data Stores* (which require or auto-detect a specific schema for relational data) and *Unstructured Data Stores* (optimized for parsing and chunking documents like PDFs, DOCX, or HTML). It also prominently notes considerations for data residency, region selection, and encryption.
+
+- **AI Application & Enablement:** The final panel shows the business value: the data is ready to be linked to a generative AI or search application, enabling powerful, secure, and permission-aware use cases like semantic search, answer generation, and data insights.
 
 
-
-========= 
-
-Here is a quick translation of concepts for your Data Engineering background:
-
-Data Stores: Think of these as managed search indexes. Depending on the source format, Gemini Enterprise automatically creates a structured data store (auto-detecting the schema) or an unstructured data store (handling PDFs, DOCX, HTML, etc.).
-
-Ingestion vs. Federation: Ingestion indexes the data into Google's storage infrastructure (yielding the highest search and generative quality), whereas Federation queries the external source in real-time without storing the data in Google Cloud (saving storage, but at the cost of search speed and ranking quality).
-
-Data Syncs (Entity & Identity): The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
-
-Here is an architecture diagram mapping out a standard Gemini Enterprise app building workflow using a connector:
+## Sample workflow - Use case
 
 
 ```text
@@ -88,22 +78,14 @@ Here is an architecture diagram mapping out a standard Gemini Enterprise app bui
 +--------------------------+
 ```
 
+- **Authentication & Connection:** The workflow begins when the Gemini Enterprise Connector authenticates with the external data source (using credentials, OAuth, or customer-managed encryption keys).
 
+- **Schema Detection:** As the connector reads the external system, it identifies the data format. It parses unstructured files (like PDFs) or auto-detects schemas for structured tabular data.
 
-Step-by-Step Summary of the Data Flow:
-Authentication & Connection: The workflow begins when the Gemini Enterprise Connector authenticates with the external data source (using credentials, OAuth, or customer-managed encryption keys).
+- **Data Synchronization:** The Data Sync Engine triggers based on a defined schedule. It pulls Entity Data (the actual content or records) and Identity Data (user permissions and group mappings).
 
-Schema Detection: As the connector reads the external system, it identifies the data format. It parses unstructured files (like PDFs) or auto-detects schemas for structured tabular data.
+- **Ingestion & Indexing:** The pulled data flows into the Vertex AI Search infrastructure. During this step, the data is chunked and indexed so the underlying LLM can rapidly retrieve semantic matches. (Note: If you choose Data Federation instead of Ingestion, this storage step is bypassed, and data is queried directly at runtime).
 
-Data Synchronization: The Data Sync Engine triggers based on a defined schedule. It pulls Entity Data (the actual content or records) and Identity Data (user permissions and group mappings).
-
-Ingestion & Indexing: The pulled data flows into the Vertex AI Search infrastructure. During this step, the data is chunked and indexed so the underlying LLM can rapidly retrieve semantic matches. (Note: If you choose Data Federation instead of Ingestion, this storage step is bypassed, and data is queried directly at runtime).
-
-App Availability: The indexed data lands in a dedicated Data Store. You link this Data Store to your Gemini Enterprise App, allowing end-users to query the application. The system cross-references the user's identity with the synced Identity Data to ensure secure, permissions-aware AI responses.
-
-
-
-
-Note: Vertex AI also provide a managed training service that helps you operationalize large scale model training. Learn more [here](https://docs.cloud.google.com/vertex-ai/docs/training/overview?_gl=1*8f2np4*_ga*MTE4NTIwMDUzMC4xNzU3MzQzMjAz*_ga_WH2QY8WWF5*czE3NzE4MDY0NjQkbzE2JGcxJHQxNzcxODEwNDkxJGo0JGwwJGgw#workflow-serverless-training)
+- **App Availability:** The indexed data lands in a dedicated Data Store. You link this Data Store to your Gemini Enterprise App, allowing end-users to query the application. The system cross-references the user's identity with the synced Identity Data to ensure secure, permissions-aware AI responses.
 
 
