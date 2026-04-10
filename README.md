@@ -1,52 +1,24 @@
-# 🚀 Gemini Connector Concepts
+## What is Google Connector?
 
-You are a learning specialist. 
+A connector is a set of Google-managed infrastructure, applications, and processes that can be thought of as an "ETL in a box." Its primary role is to integrate with source systems. Connectors authenticate themselves and fetch documents and identities (for Access Control Lists - ACLs) from source systems. There are two types of connector in Google Gemini Enterprise:
 
-I am new in the Gemini Enterprise product and my scope of work is currently with the Gemini Enterprise https://docs.cloud.google.com/gemini/enterprise/docs/connectors/introduction-to-connectors-and-data-stores
+1. Native Conenctor - These connectors fetch documents and index them internally, consuming storage space
+2. Federated Connector - Unlike Native connectors, these do not fetch documents. Instead, they perform remote searches at the time of data blending (at request time)
 
-I have experience on other ALML products within the Google Cloud, like Vertex AI and my specialization is Data Engineering. 
+There are a few concepts that are important to understand: 
 
-Considering those, teach me about the Gemini Enterprise connector and provide me a info graph or please create a plain-text ASCII architecture diagram for the a sample Gemini Enterprise app building customer use case workflow:
+- **Retrieval-Augmented Generation (RAG):** is an AI framework that improves Large Language Model (LLM) accuracy by fetching relevant, up-to-date data from external, trusted knowledge bases before generating a response. Give more context to the LLM to generate more accurate and avoid hallucinations. 
 
-Format requirements: 
-1. Use simple text boxes (using +, -, |) for the components. 
-2. Use arrows (v, ->) to show the flow of data or the call path. 
-3. Add brief, plain-English annotations to the right of each box explaining what happens at that step. 
-4. If there is a known issue or bottleneck, point an arrow to it in the diagram. 
-5. Below the diagram, provide a brief step-by-step summary of how the data flows.  
+- **Data Stores:** Think of these as managed search indexes. Depending on the source format, Gemini Enterprise automatically creates a structured data store (auto-detecting the schema) or an unstructured data store (handling PDFs, DOCX, HTML, etc.).
 
+- **Ingestion vs. Federation:** Ingestion indexes the data into Google's storage infrastructure (yielding the highest search and generative quality), whereas Federation queries the external source in real-time without storing the data in Google Cloud (saving storage, but at the cost of search speed and ranking quality).
 
-Welcome to the beginner-friendly guide for navigating the Google Cloud Vertex AI ecosystem. This repository helps new users understand which product to use for their specific artificial intelligence and machine learning needs. Often people confused which product to use and what is the difference between the products within the vertex AI and different use cases. Hence I am preparing this guide to understand the difference between the product and simple word describtions.
-
-## Vertex AI Studio
-
-- A connector is a set of Google-managed infrastructure, applications, and processes that can be thought of as an "ETL in a box." Its primary role is to integrate with source systems
-
-- Connectors authenticate themselves and fetch documents and identities (for Access Control Lists - ACLs) from source systems
-
-- Native Conenctor - These connectors fetch documents and index them internally, consuming storage space
-- Federated Connector - Unlike Native connectors, these do not fetch documents. Instead, they perform remote searches at the time of data blending (at request time)
-
-I appreciate your time
+- **Data Syncs (Entity & Identity):** The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
 
 
 
 
-- Azure Synaps, Azure AD, 
 
-- ETL,ELT,Hadoop cluster,  PubSub, BQ, Dataproc, Dataflow 
-
-
-Data Stores: Think of these as managed search indexes. Depending on the source format, Gemini Enterprise automatically creates a structured data store (auto-detecting the schema) or an unstructured data store (handling PDFs, DOCX, HTML, etc.).
-
-Ingestion vs. Federation: Ingestion indexes the data into Google's storage infrastructure (yielding the highest search and generative quality), whereas Federation queries the external source in real-time without storing the data in Google Cloud (saving storage, but at the cost of search speed and ranking quality).
-
-Data Syncs (Entity & Identity): The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
-
-
-Data Federation vs Data ingestion (indexing)
-
-Retrieval-Augmented Generation (RAG) is an AI framework that improves Large Language Model (LLM) accuracy by fetching relevant, up-to-date data from external, trusted knowledge bases before generating a response. Give more context to the LLM to generate more accurate and avoid hallucinations 
 
 
 >> connector create vertex AI search index so that Gemini can use it
