@@ -16,7 +16,7 @@ There are a few concepts that are important to understand:
 - **Data Syncs (Entity & Identity):** The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
 
 
-![Screenshot of the project](amityleo/Learning-GCP/images/dfgraph.jpg)
+![Screenshot of the project](https://github.com/amityleo/Learning-GCP/images/dfgraph.jpg)
 
 ==============
 
