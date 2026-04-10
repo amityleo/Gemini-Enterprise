@@ -16,6 +16,7 @@ There are a few concepts that are important to understand:
 - **Data Syncs (Entity & Identity):** The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
 
 
+![Screenshot of the project](amityleo/Learning-GCP/images/dfgraph.jpg)
 
 ==============
 
@@ -104,4 +105,4 @@ App Availability: The indexed data lands in a dedicated Data Store. You link thi
 
 Note: Vertex AI also provide a managed training service that helps you operationalize large scale model training. Learn more [here](https://docs.cloud.google.com/vertex-ai/docs/training/overview?_gl=1*8f2np4*_ga*MTE4NTIwMDUzMC4xNzU3MzQzMjAz*_ga_WH2QY8WWF5*czE3NzE4MDY0NjQkbzE2JGcxJHQxNzcxODEwNDkxJGo0JGwwJGgw#workflow-serverless-training)
 
-![Screenshot of the project](images/vapipeline.jpg)
+
