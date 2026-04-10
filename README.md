@@ -15,6 +15,7 @@ There are a few concepts that are important to understand:
 
 - **Data Syncs (Entity & Identity):** The connector doesn't just pull the payload (Entity data like Jira tickets or SharePoint docs); it also runs Identity syncs to pull Access Control Lists (ACLs). This ensures that when a user asks Gemini a question, it only generates answers based on documents that the specific user is authorized to see.
 
+Below is the sample infographic to illustrate the workflow of the Gemini Connector:
 
 ![Screenshot of the project](images/workflow.png)
 
